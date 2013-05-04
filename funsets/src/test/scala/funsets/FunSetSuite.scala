@@ -77,6 +77,10 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s12 = union(s1, s2)
+    val s13 = union(s1, s3)
+    val s123 = union(s12, s3)
+
   }
 
   /**
@@ -86,7 +90,7 @@ class FunSetSuite extends FunSuite {
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
-  ignore("singletonSet(1) contains 1") {
+  test("singletonSet(1) contains 1") {
     
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
@@ -101,7 +105,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  ignore("union contains all elements") {
+  test("union contains all elements") {
     new TestSets {
       val s = union(s1, s2)
       assert(contains(s, 1), "Union 1")
@@ -109,4 +113,56 @@ class FunSetSuite extends FunSuite {
       assert(!contains(s, 3), "Union 3")
     }
   }
+  
+  test("intersect contains all intersecting elements ") {
+    new TestSets {
+      val inters = intersect(s12, s13)
+      assert(contains(inters, 1))
+      assert(!contains(inters, 2))
+      assert(!contains(inters, 3))
+    }
+  }
+
+  test("diff contains only different items") {
+    new TestSets {
+      val d = diff(s12, s13)
+      assert(!contains(d, 1))
+      assert(contains(d, 2))
+      assert(!contains(d, 3))
+    }
+  }
+  
+  test("filter applies filter") {
+    new TestSets {
+      val f = filter(s123, (x => x % 2 == 1))
+      assert(contains(f, 1))
+      assert(!contains(f, 2))
+      assert(contains(f, 3))
+    }
+  }
+  
+  test("forall") {
+    new TestSets {
+      assert(forall(s123, x => x < 100))
+      assert(!forall(s123, x=> x % 2 == 0))
+      assert(forall(s123, x => x > 0 && x <= 3))
+    }
+  }
+  
+  test("exists") {
+    new TestSets {
+      assert(exists(s123, x => x == 3))
+      assert(!exists(s123, x => x > 100))
+      assert(exists(s123, x => true))
+    }
+  }
+
+  test("map") {
+    new TestSets {
+      assert(contains(map(s123, x => x * 2), 6))
+      assert(!contains(map(s123, x => x), 6))
+      assert(contains(map(s123, x => x * 100), 200))
+    }
+  }
+
 }
