@@ -55,7 +55,7 @@ object FunSets {
    */
   def forall(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if (a >= bound) true
+      if (a > bound) true
       else if (contains(s, a)) p(a) && iter(a + 1)
       else iter(a + 1)
     }
@@ -68,8 +68,8 @@ object FunSets {
    */
   def exists(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if(a >= bound) false
-      else if (contains(s, a)) p(a) || iter(a + 1)
+      if(a > bound) false
+      else if (contains(s, a)) forall(singletonSet(a), p) || iter(a + 1)
       else iter(a + 1)
     }
     iter(-bound)
