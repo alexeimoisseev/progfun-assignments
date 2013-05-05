@@ -77,9 +77,11 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s1000 = singletonSet(1000)
     val s12 = union(s1, s2)
     val s13 = union(s1, s3)
     val s123 = union(s12, s3)
+    val s1231000 = union(s123, s1000);
 
   }
 
@@ -159,7 +161,7 @@ class FunSetSuite extends FunSuite {
 
   test("map") {
     new TestSets {
-      assert(contains(map(s123, x => x * 2), 6))
+      assert(contains(map(s1231000, x => x - 1 ), 999))
       assert(!contains(map(s123, x => x), 6))
       assert(contains(map(s123, x => x * 100), 200))
     }
